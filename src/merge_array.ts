@@ -1,35 +1,38 @@
-export function merge(collection_1:number[],collection_2:number[],collection_3:number[]):number[]{
-    
-    //check for array and int data input
-    const collections = [collection_1, collection_2, collection_3];
-
-    for (let i = 0; i < collections.length; i++) {
-        const arr = collections[i];
-        if (!Array.isArray(arr)) {
-            throw new Error(`collection_${i + 1} is not an array`);
-        }
-        for (const value of arr) {
-            if (!Number.isInteger(value)) {
-                throw new Error(`collection_${i + 1} contains non-integer value: ${value}`);
-            }
-        }
+export function merge(collection_1: number[], collection_2: number[], collection_3: number[]): number[] {
+    if (!Array.isArray(collection_1) || !Array.isArray(collection_2) || !Array.isArray(collection_3)) {
+        throw new Error("All inputs must be arrays of integers.");
+      }
+      
+    const all = [...collection_1, ...collection_2, ...collection_3];
+    if (!all.every(Number.isInteger)) {
+      throw new Error("All input values must be integers.");
     }
-
-    // reverst collection 2 
-    const reversed_collection_2 = [...collection_2].reverse();
-
-    const result = [...collection_1, ...reversed_collection_2, ...collection_3];
-
-    // sorted array by ascending
-    for (let i=0; i<result.length; i++){
-        for (let j=0; j<result.length -i -1; j++){
-            if(result[j]>result[j+1]){
-                const temp = result[j];
-                result[j] = result[j+1];
-                result[j+1] = temp;
-            }
-        }
+  
+    const reversed_c2 = [...collection_2].reverse();
+  
+    const merged_c1_c2 = mergeTwoSorted(collection_1, reversed_c2);
+  
+    return mergeTwoSorted(merged_c1_c2, collection_3);
+  }
+  
+  function mergeTwoSorted(a: number[], b: number[]): number[] {
+    const result: number[] = [];
+    let i = 0;
+    let j = 0;
+  
+    while (i < a.length && j < b.length) {
+      if (a[i] <= b[j]) {
+        result.push(a[i]);
+        i++;
+      } else {
+        result.push(b[j]);
+        j++;
+      }
     }
+  
+    while (i < a.length) result.push(a[i++]);
+    while (j < b.length) result.push(b[j++]);
+  
     return result;
-}
-
+  }
+  

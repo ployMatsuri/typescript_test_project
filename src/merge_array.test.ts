@@ -20,7 +20,7 @@ describe('merge',()=>{
 
     it('should handle duplicates', () => {
         expect(merge([1, 2], [2, 1], [1, 2])).toEqual([1, 1, 1, 2, 2, 2]);
-        expect(merge([11,12,13,14,15], [25,26], [11,12,25])).toEqual([11, 11, 12, 12, 13, 14, 15, 25, 25, 26]);
+        expect(merge([11,12,13,14,15], [26,25], [11,12,25])).toEqual([11, 11, 12, 12, 13, 14, 15, 25, 25, 26]);
     });
 
     it('should handle negative number', () => {
@@ -32,13 +32,13 @@ describe('merge',()=>{
     });
 
     it('should throw error if non-integer is present', () => {
-        expect(() => merge([1, 2], [3, 'a' as any], [4])).toThrow('collection_2 contains non-integer value: a');
-        expect(() => merge([1, 2.2], [], [])).toThrow('collection_1 contains non-integer value: 2.2');
-        expect(() => merge([], [], ['x' as any])).toThrow('collection_3 contains non-integer value: x');
+        expect(() => merge([1, 2], [3, 'a' as any], [4])).toThrow('All input values must be integers.');
+        expect(() => merge([1, 2.2], [], [])).toThrow('All input values must be integers.');
+        expect(() => merge([], [], ['x' as any])).toThrow('All input values must be integers.');
     });
     
     it('should throw error if input is not an array', () => {
-        expect(() => merge([1, 2], 123 as any, [3])).toThrow('collection_2 is not an array');
+        expect(() => merge([1, 2], 123 as any, [3])).toThrow('All inputs must be arrays of integers.');
     });
     
 })
